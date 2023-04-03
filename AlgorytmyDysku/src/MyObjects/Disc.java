@@ -66,4 +66,16 @@ public class Disc {
         disc[position[0]][position[1]][position[2]] = null;
         return temp;
     }
+
+    public Disc getSelfClone() {
+        Request[][][] newReqTab = new Request[disc.length][disc[0].length][disc[0][0].length];
+        for (int cID = 0; cID < disc.length; cID++) {
+            for (int bID = 0; bID < disc[0].length; bID++) {
+                for (int pID = 0; pID < disc[0][0].length; pID++) {
+                    newReqTab[cID][bID][pID] = disc[cID][bID][pID];
+                }
+            }
+        }
+        return new Disc(newReqTab);
+    }
 }

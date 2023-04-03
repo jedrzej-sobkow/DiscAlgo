@@ -20,7 +20,7 @@ public class SCAN {
     private ArrayList<Request> listOfDeadRequests = new ArrayList<>();
 
     public SCAN (Disc disc, int cylChangeTime, int blkChangeTime, int pltChangeTime, int reqLifetime) {
-        this.disc = disc;
+        this.disc = disc.getSelfClone();
         cylinderChangeTime = cylChangeTime;
         blockChangeTime = blkChangeTime;
         platterChangeTime = pltChangeTime;
@@ -39,6 +39,7 @@ public class SCAN {
 
             lastlyExecutedRequest = nextRequest;
             listOfDeadRequests.add(nextRequest);
+            time += requestLifetime;
 
             nextRequest = findNextRequest();
         }

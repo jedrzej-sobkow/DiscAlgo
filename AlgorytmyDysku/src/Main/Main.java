@@ -29,6 +29,7 @@ public class Main {
         SSTF sstf = new SSTF(disc, CYLINDER_CHANGE_TIME, BLOCK_CHANGE_TIME, PLATTER_CHANGE_TIME, REQUEST_LIFETIME);
         SCAN scan = new SCAN(disc, CYLINDER_CHANGE_TIME, BLOCK_CHANGE_TIME, PLATTER_CHANGE_TIME, REQUEST_LIFETIME);
         C_SCAN c_scan = new C_SCAN(disc, CYLINDER_CHANGE_TIME, BLOCK_CHANGE_TIME, PLATTER_CHANGE_TIME, REQUEST_LIFETIME);
+        EDF edf = new EDF(disc, CYLINDER_CHANGE_TIME, BLOCK_CHANGE_TIME, PLATTER_CHANGE_TIME, REQUEST_LIFETIME);
     }
 
     private static void createDisk () {
@@ -49,7 +50,7 @@ public class Main {
             }
 
             int momentOfNotification = rng.nextInt(numberOfSegments - numberOfSegments/3);
-            int deadline = (rng.nextBoolean()) ? -1 : momentOfNotification + rng.nextInt(numberOfSegments/3);
+            double deadline = (rng.nextBoolean()) ? Double.POSITIVE_INFINITY : momentOfNotification + rng.nextInt(numberOfSegments/3);
 
             int[] position = disc.getCylinderBlockAndPlatterOfGivenAddress(address);
 

@@ -6,9 +6,9 @@ public class Request { //implements Comparable<Request> {
     private final int blockID;
     private final int platterID;
     private final int momentOfNotification;
-    private final int deadline;
+    private final double deadline;
     private int waitingTime;
-    public Request(int cylinderID, int blockID, int platterID, int momentOfNotification, int deadline) {
+    public Request(int cylinderID, int blockID, int platterID, int momentOfNotification, double deadline) {
         this.cylinderID = cylinderID;
         this.blockID = blockID;
         this.platterID = platterID;
@@ -43,7 +43,7 @@ public class Request { //implements Comparable<Request> {
         return momentOfNotification;
     }
 
-    public int getDeadline() {
+    public double getDeadline() {
         return deadline;
     }
 

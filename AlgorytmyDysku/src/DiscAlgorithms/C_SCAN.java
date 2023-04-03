@@ -18,7 +18,7 @@ public class C_SCAN {
     private ArrayList<Request> listOfDeadRequests = new ArrayList<>();
 
     public C_SCAN(Disc disc, int cylChangeTime, int blkChangeTime, int pltChangeTime, int reqLifetime) {
-        this.disc = disc;
+        this.disc = disc.getSelfClone();
         cylinderChangeTime = cylChangeTime;
         blockChangeTime = blkChangeTime;
         platterChangeTime = pltChangeTime;

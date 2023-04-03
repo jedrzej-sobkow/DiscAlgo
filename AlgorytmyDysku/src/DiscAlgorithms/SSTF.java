@@ -62,7 +62,7 @@ public class SSTF {
             return queueOfRequests.remove(0);
 
         Request nearestRequest = queueOfRequests.get(0);
-        int bestDifferenceInTime = time += DistanceCalculator.getDifferenceInTimeBetweenTwoRequests
+        int bestDifferenceInTime = DistanceCalculator.getDifferenceInTimeBetweenTwoRequests
                 (lastlyExecutedRequest,nearestRequest,platterChangeTime,cylinderChangeTime,blockChangeTime);
 
         int numberOfProcessesComingBeforeActualTime = 1;
@@ -72,7 +72,7 @@ public class SSTF {
                 Math.max(nearestRequest.getMomentOfNotification(), time)) {
 
             Request potentialRequest = queueOfRequests.get(numberOfProcessesComingBeforeActualTime);
-            int potentialDifferenceInTime = time += DistanceCalculator.getDifferenceInTimeBetweenTwoRequests
+            int potentialDifferenceInTime = DistanceCalculator.getDifferenceInTimeBetweenTwoRequests
                     (lastlyExecutedRequest,potentialRequest,platterChangeTime,cylinderChangeTime,blockChangeTime);
 
 
