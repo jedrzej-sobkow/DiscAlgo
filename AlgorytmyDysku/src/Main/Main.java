@@ -51,7 +51,7 @@ public class Main {
             }
 
             int momentOfNotification = rng.nextInt(numberOfSegments - numberOfSegments/3);
-            double deadline = momentOfNotification + rng.nextInt(numberOfSegments);
+            double deadline = momentOfNotification + rng.nextInt(numberOfSegments/100);
             if (!IS_DEADLINE_IMPORTANT) {
                 deadline = Double.POSITIVE_INFINITY;
             }

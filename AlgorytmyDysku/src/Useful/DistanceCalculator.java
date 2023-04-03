@@ -24,6 +24,16 @@ public class DistanceCalculator {
     public static int getDifferenceInTimeBetweenTwoRequests
             (Request req1, Request req2, int platterChangeTime,
              int cylinderChangeTime, int blockChangeTime) {
+        if (req1 == null) {
+            return req2.getPlatterID() * platterChangeTime
+                    + req2.getBlockID() * blockChangeTime
+                    + req2.getCylinderID() * cylinderChangeTime;
+        }
+        if (req2 == null) {
+            return req1.getPlatterID() * platterChangeTime
+                    + req1.getBlockID() * blockChangeTime
+                    + req1.getCylinderID() * cylinderChangeTime;
+        }
         int cylinderID1 = req1.getCylinderID();
         int blockID1 = req1.getBlockID();
         int platterID1 = req1.getPlatterID();

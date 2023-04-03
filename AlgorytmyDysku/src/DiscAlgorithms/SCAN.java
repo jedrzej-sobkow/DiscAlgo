@@ -7,6 +7,7 @@ import Useful.DistanceCalculator;
 import Useful.StatsManager;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class SCAN {
 
@@ -42,6 +43,18 @@ public class SCAN {
         Request nextRequest = findNextRequest();
 
         while (nextRequest != null) {
+
+            time += DistanceCalculator.getDifferenceInTimeBetweenTwoRequests(lastlyExecutedRequest, nextRequest, platterChangeTime, cylinderChangeTime, blockChangeTime);
+            if (lastlyExecutedRequest != null) {
+                cylinderChangingNumberOfMoves += Math.abs(lastlyExecutedRequest.getCylinderID() - nextRequest.getCylinderID());
+                platterChangingNumberOfMoves += Math.abs(lastlyExecutedRequest.getPlatterID() - nextRequest.getPlatterID());
+                blockChangingNumberOfMoves += Math.abs(lastlyExecutedRequest.getBlockID() - nextRequest.getBlockID());
+            }
+            else {
+                cylinderChangingNumberOfMoves += nextRequest.getCylinderID();
+                platterChangingNumberOfMoves += nextRequest.getPlatterID();
+                blockChangingNumberOfMoves += nextRequest.getBlockID();
+            }
 
             nextRequest.setWaitingTime(time-nextRequest.getMomentOfNotification());
 
@@ -92,14 +105,14 @@ public class SCAN {
             tempTime += DistanceCalculator.getDifferenceInTimeBetweenTwoSegments(previousAddress, potentialAddress,
                     disc, platterChangeTime,
                     cylinderChangeTime, blockChangeTime);
-            cylinderChangingNumberOfMoves += Math.abs(disc.getCylinderID(previousAddress) - disc.getCylinderID(potentialAddress));
-            platterChangingNumberOfMoves += Math.abs(disc.getPlatterID(previousAddress) - disc.getPlatterID(potentialAddress));
-            blockChangingNumberOfMoves += Math.abs(disc.getBlockID(previousAddress) - disc.getBlockID(potentialAddress));
+//            cylinderChangingNumberOfMoves += Math.abs(disc.getCylinderID(previousAddress) - disc.getCylinderID(potentialAddress));
+//            platterChangingNumberOfMoves += Math.abs(disc.getPlatterID(previousAddress) - disc.getPlatterID(potentialAddress));
+//            blockChangingNumberOfMoves += Math.abs(disc.getBlockID(previousAddress) - disc.getBlockID(potentialAddress));
 
             if (potentialRequest != null) {
                 isAnyAlive = true;
                 if(potentialRequest.getMomentOfNotification() <= tempTime) {
-                    this.time = tempTime;
+//                    this.time = tempTime;
                     return disc.removeRequest(potentialAddress);
                 }
             }
