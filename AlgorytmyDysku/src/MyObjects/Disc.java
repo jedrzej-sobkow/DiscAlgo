@@ -72,7 +72,9 @@ public class Disc {
         for (int cID = 0; cID < disc.length; cID++) {
             for (int bID = 0; bID < disc[0].length; bID++) {
                 for (int pID = 0; pID < disc[0][0].length; pID++) {
-                    newReqTab[cID][bID][pID] = disc[cID][bID][pID].getClone();
+                    if(disc[cID][bID][pID] != null){
+                        newReqTab[cID][bID][pID] = disc[cID][bID][pID].getClone();
+                    }
                 }
             }
         }

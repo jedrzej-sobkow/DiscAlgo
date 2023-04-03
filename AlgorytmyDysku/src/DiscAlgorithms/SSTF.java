@@ -37,7 +37,7 @@ public class SSTF {
         while (nextRequest != null) {
 
             if (nextRequest.getMomentOfNotification() > time)
-                time = nextRequest.getMomentOfNotification();
+                    time = nextRequest.getMomentOfNotification();
 
             if (lastlyExecutedRequest != null)
                 time += DistanceCalculator.getDifferenceInTimeBetweenTwoRequests
