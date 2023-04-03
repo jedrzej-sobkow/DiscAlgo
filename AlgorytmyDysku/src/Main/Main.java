@@ -14,7 +14,7 @@ public class Main {
     private static final int BLOCKS_PER_CYLINDER = 5;
     private static final int CYLINDERS_PER_PLATTER = 2;
     private static final int NUMBER_OF_PLATTERS = 3;
-    private static final int NUMBER_OF_REQUESTS = 5;
+    private static final int NUMBER_OF_REQUESTS = 15;
     private static Disc disc;
 
     private static final boolean ARE_REQUESTS_COMING_SIMULTANEOUSLY = false;

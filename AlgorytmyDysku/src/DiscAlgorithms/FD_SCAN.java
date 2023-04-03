@@ -72,12 +72,16 @@ public class FD_SCAN {
 
         while (consideredSize < queueOfRequests.size() && queueOfRequests.get(consideredSize).getMomentOfNotification() <= maxNotificationTime) {
             consideredRequests.add(queueOfRequests.get(consideredSize));
+            consideredSize++;
         }
 
         consideredRequests.sort(new SortByDeadline());
         for (Request request: consideredRequests) {
             int timeAfterArrivalToRequest = time + DistanceCalculator.getDifferenceInTimeBetweenTwoRequests(lastlyExecutedRequest, request, platterChangeTime, cylinderChangeTime, blockChangeTime);
-            if (timeAfterArrivalToRequest > request.getDeadline()) {
+            if (request.getDeadline() == Double.POSITIVE_INFINITY) {
+                return queueOfRequests.remove(0);
+            }
+            if (timeAfterArrivalToRequest <= request.getDeadline()) {
                 queueOfRequests.remove(request);
                 return request;
             }
