@@ -58,28 +58,4 @@ public class Request { //implements Comparable<Request> {
     public Request getClone() {
         return new Request(this);
     }
-
-
-//    @Override
-//    public int compareTo(Request other) {
-//        return Integer.compare(other.getMomentOfNotification(), momentOfNotification);
-//    }
-//    @Override
-//    public boolean equals(Object other) {
-//        if (this == other) return true;
-//        if (other == null || getClass() != other.getClass())
-//            return false;
-//        Request otherRequest = (Request) other;
-//        return momentOfNotification == otherRequest.getMomentOfNotification()
-//                && position == otherRequest.getPosition()
-//                && deadline == otherRequest.getDeadline();
-//    }
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(momentOfNotification,position,deadline);
-//    }
-//    @Override
-//    public String toString() {
-//        return String.format("%d-%d-%d-%d", position,momentOfNotification,deadline,waitingTime);
-//    }
 }

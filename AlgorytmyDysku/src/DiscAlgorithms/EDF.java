@@ -4,6 +4,7 @@ import Comparators.SortByMomentOfNotification;
 import MyObjects.Disc;
 import MyObjects.Request;
 import Useful.DistanceCalculator;
+import Useful.StatsManager;
 import Useful.TableManager;
 
 import java.util.ArrayList;
@@ -19,6 +20,10 @@ public class EDF {
     private final int requestLifetime;
     private int time = 0;
 
+    private int cylinderChangingNumberOfMoves = 0;
+    private int platterChangingNumberOfMoves = 0;
+    private int blockChangingNumberOfMoves = 0;
+
     public EDF (Disc disc, int cylChangeTime, int blkChangeTime, int pltChangeTime, int reqLifetime) {
         queueOfRequests = TableManager.convert3DRequestTableTo1DArrayList(disc.getSelfClone().getDisc());
         queueOfRequests.sort(new SortByMomentOfNotification());
@@ -28,6 +33,8 @@ public class EDF {
         requestLifetime = reqLifetime;
         System.out.println();
         carryOutTheSimulation();
+        StatsManager.getStats(listOfDeadRequests, time, cylinderChangingNumberOfMoves, blockChangingNumberOfMoves, platterChangingNumberOfMoves);
+
     }
 
     private void carryOutTheSimulation () {
@@ -39,9 +46,13 @@ public class EDF {
             if (nextRequest.getMomentOfNotification() > time)
                 time = nextRequest.getMomentOfNotification();
 
-            if (lastlyExecutedRequest != null)
+            if (lastlyExecutedRequest != null){
                 time += DistanceCalculator.getDifferenceInTimeBetweenTwoRequests
                         (lastlyExecutedRequest,nextRequest,platterChangeTime,cylinderChangeTime,blockChangeTime);
+                cylinderChangingNumberOfMoves += Math.abs(lastlyExecutedRequest.getCylinderID() - nextRequest.getCylinderID());
+                platterChangingNumberOfMoves += Math.abs(lastlyExecutedRequest.getPlatterID() - nextRequest.getPlatterID());
+                blockChangingNumberOfMoves += Math.abs(lastlyExecutedRequest.getBlockID() - nextRequest.getBlockID());
+            }
 
             nextRequest.setWaitingTime(time-nextRequest.getMomentOfNotification());
             time += requestLifetime;
