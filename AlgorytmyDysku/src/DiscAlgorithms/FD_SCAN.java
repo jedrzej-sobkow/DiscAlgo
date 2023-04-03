@@ -34,6 +34,7 @@ public class FD_SCAN {
         requestLifetime = reqLifetime;
         System.out.println();
         carryOutTheSimulation();
+        System.out.println("FD-SCAN");
         StatsManager.getStats(listOfDeadRequests, time, cylinderChangingNumberOfMoves, blockChangingNumberOfMoves, platterChangingNumberOfMoves);
 
     }

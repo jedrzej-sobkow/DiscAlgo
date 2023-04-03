@@ -33,6 +33,7 @@ public class FCFS {
         requestLifetime = reqLifetime;
         System.out.println();
         carryOutTheSimulation();
+        System.out.println("FCFS");
         StatsManager.getStats(listOfDeadRequests, time, cylinderChangingNumberOfMoves, blockChangingNumberOfMoves, platterChangingNumberOfMoves);
     }
 

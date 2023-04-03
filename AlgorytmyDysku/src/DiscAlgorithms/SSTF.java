@@ -33,6 +33,7 @@ public class SSTF {
         requestLifetime = reqLifetime;
         System.out.println();
         carryOutTheSimulation();
+        System.out.println("SSTF");
         StatsManager.getStats(listOfDeadRequests, time, cylinderChangingNumberOfMoves, blockChangingNumberOfMoves, platterChangingNumberOfMoves);
 
     }

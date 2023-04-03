@@ -80,4 +80,16 @@ public class Disc {
         }
         return new Disc(newReqTab);
     }
+
+    public int getCylinderID(int address) {
+        return address / (getPlattersNumber() * getBlocksPerCylinderNumber());
+    }
+
+    public int getBlockID(int address) {
+        return ((address % (getPlattersNumber() * getBlocksPerCylinderNumber())) / getPlattersNumber());
+    }
+
+    public int getPlatterID(int address) {
+        return (address % getPlattersNumber());
+    }
 }

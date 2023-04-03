@@ -33,6 +33,7 @@ public class EDF {
         requestLifetime = reqLifetime;
         System.out.println();
         carryOutTheSimulation();
+        System.out.println("FDF");
         StatsManager.getStats(listOfDeadRequests, time, cylinderChangingNumberOfMoves, blockChangingNumberOfMoves, platterChangingNumberOfMoves);
 
     }

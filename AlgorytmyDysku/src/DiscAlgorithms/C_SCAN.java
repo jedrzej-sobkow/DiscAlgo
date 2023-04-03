@@ -10,7 +10,6 @@ import java.util.ArrayList;
 public class C_SCAN {
 
     private final Disc disc;
-    private final Disc baseDisc;
     private final int cylinderChangeTime;
     private final int blockChangeTime;
     private final int platterChangeTime;
@@ -24,7 +23,6 @@ public class C_SCAN {
     private int blockChangingNumberOfMoves = 0;
 
     public C_SCAN(Disc disc, int cylChangeTime, int blkChangeTime, int pltChangeTime, int reqLifetime) {
-        baseDisc = disc;
         this.disc = disc.getSelfClone();
         cylinderChangeTime = cylChangeTime;
         blockChangeTime = blkChangeTime;
@@ -32,6 +30,7 @@ public class C_SCAN {
         requestLifetime = reqLifetime;
         System.out.println();
         carryOutTheSimulation();
+        System.out.println("C-SCAN");
         StatsManager.getStats(listOfDeadRequests, time, cylinderChangingNumberOfMoves, blockChangingNumberOfMoves, platterChangingNumberOfMoves);
 
     }
@@ -84,9 +83,9 @@ public class C_SCAN {
             tempTime += DistanceCalculator.getDifferenceInTimeBetweenTwoSegments(previousAddress, potentialAddress,
                     disc, platterChangeTime,
                     cylinderChangeTime, blockChangeTime);
-            cylinderChangingNumberOfMoves += Math.abs(baseDisc.getRequest(previousAddress).getCylinderID() - baseDisc.getRequest(potentialAddress).getCylinderID());
-            platterChangingNumberOfMoves += Math.abs(baseDisc.getRequest(previousAddress).getPlatterID() - baseDisc.getRequest(potentialAddress).getPlatterID());
-            blockChangingNumberOfMoves += Math.abs(baseDisc.getRequest(previousAddress).getBlockID() - baseDisc.getRequest(potentialAddress).getBlockID());
+            cylinderChangingNumberOfMoves += Math.abs(disc.getCylinderID(previousAddress) - disc.getCylinderID(potentialAddress));
+            platterChangingNumberOfMoves += Math.abs(disc.getPlatterID(previousAddress) - disc.getPlatterID(potentialAddress));
+            blockChangingNumberOfMoves += Math.abs(disc.getBlockID(previousAddress) - disc.getBlockID(potentialAddress));
 
             if (potentialRequest != null) {
                 isAnyAlive = true;

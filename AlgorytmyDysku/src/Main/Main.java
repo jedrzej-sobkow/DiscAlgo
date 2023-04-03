@@ -9,16 +9,16 @@ public class Main {
 
     private static final int REQUEST_LIFETIME = 1;
     private static final int PLATTER_CHANGE_TIME = 1;
-    private static final int BLOCK_CHANGE_TIME = 1;
-    private static final int CYLINDER_CHANGE_TIME = 3;
-    private static final int BLOCKS_PER_CYLINDER = 5;
-    private static final int CYLINDERS_PER_PLATTER = 2;
-    private static final int NUMBER_OF_PLATTERS = 3;
-    private static final int NUMBER_OF_REQUESTS = 15;
+    private static final int BLOCK_CHANGE_TIME = 3;
+    private static final int CYLINDER_CHANGE_TIME = 10;
+    private static final int BLOCKS_PER_CYLINDER = 100;
+    private static final int CYLINDERS_PER_PLATTER = 100;
+    private static final int NUMBER_OF_PLATTERS = 10;
+    private static final int NUMBER_OF_REQUESTS = 150;
     private static Disc disc;
 
     private static final boolean ARE_REQUESTS_COMING_SIMULTANEOUSLY = false;
-    private static final boolean IS_DEADLINE_IMPORTANT = false;
+    private static final boolean IS_DEADLINE_IMPORTANT = true;
 
     public static void main(String[] args) {
 
@@ -51,7 +51,10 @@ public class Main {
             }
 
             int momentOfNotification = rng.nextInt(numberOfSegments - numberOfSegments/3);
-            double deadline = (rng.nextBoolean()) ? Double.POSITIVE_INFINITY : momentOfNotification + rng.nextInt(numberOfSegments/3);
+            double deadline = momentOfNotification + rng.nextInt(numberOfSegments);
+            if (!IS_DEADLINE_IMPORTANT) {
+                deadline = Double.POSITIVE_INFINITY;
+            }
 
             int[] position = disc.getCylinderBlockAndPlatterOfGivenAddress(address);
 
