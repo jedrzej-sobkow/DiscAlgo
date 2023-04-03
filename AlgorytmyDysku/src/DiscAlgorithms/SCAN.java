@@ -44,7 +44,6 @@ public class SCAN {
         }
     }
 
-    //TODO Naprawić zliczanie czasu.
     private Request findNextRequest () {
 
         int tempTime = time;
@@ -99,40 +98,6 @@ public class SCAN {
 
         return null;
 
-//        if (headFlag) {
-//            while (++actualAddress <= disc.getLastAddress()) {
-//                int potentialAddress = actualAddress++;
-//                Request potentialRequest = disc.getRequest(potentialAddress);
-//                if (potentialRequest != null && potentialRequest.getMomentOfNotification() < time) {
-//                    time += DistanceCalculator.getDifferenceInTimeBetweenTwoSegments
-//                            (actualAddress, potentialAddress,disc,platterChangeTime,cylinderChangeTime,blockChangeTime);
-//                    disc.addRequest(potentialAddress, null);
-//                    return potentialRequest;
-//                }
-//                time += DistanceCalculator.getDifferenceInTimeBetweenTwoSegments
-//                        (actualAddress, potentialAddress,disc,platterChangeTime,cylinderChangeTime,blockChangeTime);
-//                //lastlyExecutedRequest.setCylinderID();
-//                //moveHeadToRightEdge();
-//            }
-//            headFlag = false;
-//        }
-//        else {
-//            while (actualAddress-- >= 0) {
-//                int potentialAddress = actualAddress--;
-//                Request potentialRequest = disc.getRequest(potentialAddress);
-//                if (potentialRequest != null && potentialRequest.getMomentOfNotification() < time) {
-//                    time += DistanceCalculator.getDifferenceInTimeBetweenTwoSegments
-//                            (actualAddress, potentialAddress,disc,platterChangeTime,cylinderChangeTime,blockChangeTime);
-//                    disc.addRequest(potentialAddress, null);
-//                    return potentialRequest;
-//                }
-//                time += DistanceCalculator.getDifferenceInTimeBetweenTwoSegments
-//                        (actualAddress, potentialAddress,disc,platterChangeTime,cylinderChangeTime,blockChangeTime);
-//                //moveHeadToLeftEdge();
-//            }
-//            headFlag = true;
-//        }
-//        return null;
     }
 
 }

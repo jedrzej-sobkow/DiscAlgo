@@ -17,7 +17,7 @@ public class C_SCAN {
     private Request lastlyExecutedRequest = null;
     private ArrayList<Request> listOfDeadRequests = new ArrayList<>();
 
-    public C_SCAN (Disc disc, int cylChangeTime, int blkChangeTime, int pltChangeTime, int reqLifetime) {
+    public C_SCAN(Disc disc, int cylChangeTime, int blkChangeTime, int pltChangeTime, int reqLifetime) {
         this.disc = disc;
         cylinderChangeTime = cylChangeTime;
         blockChangeTime = blkChangeTime;
@@ -33,15 +33,7 @@ public class C_SCAN {
 
         while (nextRequest != null) {
 
-            if (nextRequest.getMomentOfNotification() > time)
-                time = nextRequest.getMomentOfNotification();
-
-            if (lastlyExecutedRequest != null)
-                time += DistanceCalculator.getDifferenceInTimeBetweenTwoRequests
-                        (lastlyExecutedRequest,nextRequest,platterChangeTime,cylinderChangeTime,blockChangeTime);
-
             nextRequest.setWaitingTime(time-nextRequest.getMomentOfNotification());
-            time += requestLifetime;
 
             lastlyExecutedRequest = nextRequest;
             listOfDeadRequests.add(nextRequest);
@@ -52,32 +44,50 @@ public class C_SCAN {
 
     private Request findNextRequest () {
 
-        int lastCylinderID = 0;
-        int lastBlockID = 0;
-        int lastPlatterID = 0;
         int tempTime = time;
 
-        if (lastlyExecutedRequest != null) {
-            lastCylinderID = lastlyExecutedRequest.getCylinderID();
-            lastBlockID = lastlyExecutedRequest.getBlockID();
-            lastPlatterID = lastlyExecutedRequest.getPlatterID();
+        int previousAddress = disc.getAddress(lastlyExecutedRequest);
+        if (previousAddress == -1) {
+            previousAddress = 0;
         }
 
-        int actualAddress = disc.getAddress(lastPlatterID, lastCylinderID, lastBlockID);
+        int lastServicedRequestAddress = previousAddress;
+        int potentialAddress = previousAddress;
+        Request potentialRequest;
 
-        while (actualAddress++ <= disc.getLastAddress()) {
-            int potentialAddress = actualAddress++;
-            Request potentialRequest = disc.getRequest(potentialAddress);
-            if (potentialRequest != null && potentialRequest.getMomentOfNotification() < tempTime) {
-                time += DistanceCalculator.getDifferenceInTimeBetweenTwoSegments
-                        (actualAddress, potentialAddress,disc,platterChangeTime,cylinderChangeTime,blockChangeTime);
-                disc.addRequest(potentialAddress, null);
-                return potentialRequest;
+        boolean isAnyAlive = false;
+        int numberOfChecksForTheSameRequest = 0;
+
+        while (isAnyAlive || !(numberOfChecksForTheSameRequest == 2)) {
+
+            potentialAddress += 1;
+            if (potentialAddress > disc.getLastAddress()) {
+                potentialAddress = 0;
             }
-            time += DistanceCalculator.getDifferenceInTimeBetweenTwoSegments
-                    (actualAddress, potentialAddress,disc,platterChangeTime,cylinderChangeTime,blockChangeTime);
+
+
+            if (lastServicedRequestAddress == potentialAddress) {
+                numberOfChecksForTheSameRequest++;
+            }
+
+            potentialRequest = disc.getRequest(potentialAddress);
+            tempTime += DistanceCalculator.getDifferenceInTimeBetweenTwoSegments(previousAddress, potentialAddress,
+                    disc, platterChangeTime,
+                    cylinderChangeTime, blockChangeTime);
+
+            if (potentialRequest != null) {
+                isAnyAlive = true;
+                if(potentialRequest.getMomentOfNotification() <= tempTime) {
+                    this.time = tempTime;
+                    return disc.removeRequest(potentialAddress);
+                }
+            }
+
+
+            previousAddress = potentialAddress;
         }
 
         return null;
     }
+
 }
