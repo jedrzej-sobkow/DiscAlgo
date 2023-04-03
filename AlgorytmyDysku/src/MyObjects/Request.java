@@ -55,6 +55,10 @@ public class Request { //implements Comparable<Request> {
         this.waitingTime = value;
     }
 
+    public Request getClone() {
+        return new Request(this);
+    }
+
 
 //    @Override
 //    public int compareTo(Request other) {
