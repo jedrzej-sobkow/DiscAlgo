@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 public class FD_SCAN {
 
+    private Disc disc;
     private final ArrayList<Request> queueOfRequests;
     private ArrayList<Request> listOfDeadRequests = new ArrayList<>();
     private Request lastlyExecutedRequest = null;
@@ -26,6 +27,7 @@ public class FD_SCAN {
     private int blockChangingNumberOfMoves = 0;
 
     public FD_SCAN (Disc disc, int cylChangeTime, int blkChangeTime, int pltChangeTime, int reqLifetime) {
+        this.disc = disc.getSelfClone();
         queueOfRequests = TableManager.convert3DRequestTableTo1DArrayList(disc.getSelfClone().getDisc());
         queueOfRequests.sort(new SortByMomentOfNotification());
         blockChangeTime = blkChangeTime;
@@ -73,7 +75,7 @@ public class FD_SCAN {
             return null;
 
         if (lastlyExecutedRequest == null)
-            return queueOfRequests.remove(0);
+            return disc.removeRequest(disc.getAddress(queueOfRequests.remove(0)));
 
         ArrayList<Request> consideredRequests = new ArrayList<>();
         consideredRequests.add(queueOfRequests.get(0));
@@ -94,7 +96,22 @@ public class FD_SCAN {
                 return queueOfRequests.remove(0);
             }
             if (timeAfterArrivalToRequest <= request.getDeadline()) {
-                queueOfRequests.remove(request);
+                int actualAddress = disc.getAddress(lastlyExecutedRequest);
+                int change = (++actualAddress < disc.getAddress(request))? 1: -1;
+                while (true) {
+                    if (disc.getRequest(actualAddress) != null) {
+                        if (disc.getRequest(actualAddress).getMomentOfNotification() <= (time + DistanceCalculator.getDifferenceInTimeBetweenTwoSegments(disc.getAddress(lastlyExecutedRequest), actualAddress, disc, platterChangeTime, cylinderChangeTime, blockChangeTime))){
+//                            System.out.println("break");
+                            break;
+                        }
+                    }
+                    actualAddress += change;
+                    if (actualAddress == disc.getAddress(request)) {
+                        break;
+                    }
+                }
+                queueOfRequests.remove(disc.getRequest(actualAddress));
+                disc.removeRequest(actualAddress);
                 return request;
             }
         }

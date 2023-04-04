@@ -20,10 +20,10 @@ public class StatsManager {
         }
 
         System.out.println("RESULTS:");
-        System.out.println("Total time -> " + time);
+        System.out.println("Total time -> " + time/100_000f);
         System.out.println("Total number of processes -> " + numberOfProcesses);
-        System.out.println("Total waiting for response time -> " + wholeWaitingTime);
-        System.out.println("Percentage of processes served before deadline -> " + servedBeforeDeadline*100f/numberOfProcesses);
+        System.out.println("Average waiting for response time -> " + (wholeWaitingTime/numberOfProcesses)/100_000f);
+        System.out.println("Percentage of processes served before deadline -> " + servedBeforeDeadline*100f/numberOfProcesses + "%");
         System.out.println("Moves of head in order to change platter -> " + platterChangesMoves);
         System.out.println("Moves of head in order to change cylinder -> " + cylinderChangeMoves);
         System.out.println("Moves of head in order to change block -> " + blockChangeMoves);

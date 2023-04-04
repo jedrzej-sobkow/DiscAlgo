@@ -41,6 +41,10 @@ public class C_SCAN {
 
         while (nextRequest != null) {
 
+            if (time < nextRequest.getMomentOfNotification()) {
+                time = nextRequest.getMomentOfNotification();
+            }
+
             time += DistanceCalculator.getDifferenceInTimeBetweenTwoRequests(lastlyExecutedRequest, nextRequest, platterChangeTime, cylinderChangeTime, blockChangeTime);
             if (lastlyExecutedRequest != null) {
                 cylinderChangingNumberOfMoves += Math.abs(lastlyExecutedRequest.getCylinderID() - nextRequest.getCylinderID());

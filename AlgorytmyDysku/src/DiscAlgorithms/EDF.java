@@ -1,5 +1,6 @@
 package DiscAlgorithms;
 
+import Comparators.SortByDeadline;
 import Comparators.SortByMomentOfNotification;
 import MyObjects.Disc;
 import MyObjects.Request;
@@ -66,33 +67,63 @@ public class EDF {
     }
 
     private Request findNextRequest () {
-
         if (queueOfRequests.size() == 0)
             return null;
 
         if (lastlyExecutedRequest == null)
             return queueOfRequests.remove(0);
 
-        Request bestNextRequest = queueOfRequests.get(0);
-        double theMostUrgentDeadline = bestNextRequest.getDeadline();
+        ArrayList<Request> consideredRequests = new ArrayList<>();
+        consideredRequests.add(queueOfRequests.get(0));
 
-        int numberOfProcessesComingBeforeActualTime = 1;
+        int consideredSize = 1;
 
-        while (numberOfProcessesComingBeforeActualTime < queueOfRequests.size() &&
-                queueOfRequests.get(numberOfProcessesComingBeforeActualTime).getMomentOfNotification() <=
-                        Math.max(bestNextRequest.getMomentOfNotification(), time)) {
+        int maxNotificationTime = Math.max(consideredRequests.get(0).getMomentOfNotification(), time);
 
-            Request potentialRequest = queueOfRequests.get(numberOfProcessesComingBeforeActualTime);
-
-
-            if (potentialRequest.getDeadline() < theMostUrgentDeadline) {
-                bestNextRequest = potentialRequest;
-                theMostUrgentDeadline = potentialRequest.getDeadline();
-            }
-
-            numberOfProcessesComingBeforeActualTime++;
+        while (consideredSize < queueOfRequests.size() && queueOfRequests.get(consideredSize).getMomentOfNotification() <= maxNotificationTime) {
+            consideredRequests.add(queueOfRequests.get(consideredSize));
+            consideredSize++;
         }
-        queueOfRequests.remove(bestNextRequest);
-        return bestNextRequest;
+
+        consideredRequests.sort(new SortByDeadline());
+        for (Request request: consideredRequests) {
+            int timeAfterArrivalToRequest = time + DistanceCalculator.getDifferenceInTimeBetweenTwoRequests(lastlyExecutedRequest, request, platterChangeTime, cylinderChangeTime, blockChangeTime);
+            if (request.getDeadline() == Double.POSITIVE_INFINITY) {
+                return queueOfRequests.remove(0);
+            }
+            if (timeAfterArrivalToRequest <= request.getDeadline()) {
+                queueOfRequests.remove(request);
+                return request;
+            }
+        }
+        return queueOfRequests.remove(0);
+
+//        if (queueOfRequests.size() == 0)
+//            return null;
+//
+//        if (lastlyExecutedRequest == null)
+//            return queueOfRequests.remove(0);
+//
+//        Request bestNextRequest = queueOfRequests.get(0);
+//        double theMostUrgentDeadline = bestNextRequest.getDeadline();
+//
+//        int numberOfProcessesComingBeforeActualTime = 1;
+//
+//        while (numberOfProcessesComingBeforeActualTime < queueOfRequests.size() &&
+//                queueOfRequests.get(numberOfProcessesComingBeforeActualTime).getMomentOfNotification() <=
+//                        Math.max(bestNextRequest.getMomentOfNotification(), time)) {
+//
+//            Request potentialRequest = queueOfRequests.get(numberOfProcessesComingBeforeActualTime);
+//
+//
+//            if (potentialRequest.getDeadline() < theMostUrgentDeadline) {
+//                bestNextRequest = potentialRequest;
+//                theMostUrgentDeadline = potentialRequest.getDeadline();
+//            }
+//
+//            numberOfProcessesComingBeforeActualTime++;
+//        }
+//        queueOfRequests.remove(bestNextRequest);
+//        return bestNextRequest;
     }
 }

@@ -11,10 +11,10 @@ public class Main {
     private static final int PLATTER_CHANGE_TIME = 1;
     private static final int BLOCK_CHANGE_TIME = 3;
     private static final int CYLINDER_CHANGE_TIME = 10;
-    private static final int BLOCKS_PER_CYLINDER = 100;
+    private static final int BLOCKS_PER_CYLINDER = 69;
     private static final int CYLINDERS_PER_PLATTER = 100;
     private static final int NUMBER_OF_PLATTERS = 10;
-    private static final int NUMBER_OF_REQUESTS = 150;
+    private static final int NUMBER_OF_REQUESTS = 1500;
     private static Disc disc;
 
     private static final boolean ARE_REQUESTS_COMING_SIMULTANEOUSLY = false;
@@ -40,7 +40,7 @@ public class Main {
     //TODO można pomyśleć nad innym sposobem generowania procesów (konkretniej wybierania adresów)
     private static void generateRequests () {
 
-        Random rng = new Random(42);
+        Random rng = new Random(13);
 
         int numberOfSegments = NUMBER_OF_PLATTERS * BLOCKS_PER_CYLINDER * CYLINDERS_PER_PLATTER;
         int address = rng.nextInt(numberOfSegments-1);

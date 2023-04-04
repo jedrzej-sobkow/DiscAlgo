@@ -44,6 +44,9 @@ public class SCAN {
 
         while (nextRequest != null) {
 
+            if (time < nextRequest.getMomentOfNotification()) {
+                time = nextRequest.getMomentOfNotification();
+            }
             time += DistanceCalculator.getDifferenceInTimeBetweenTwoRequests(lastlyExecutedRequest, nextRequest, platterChangeTime, cylinderChangeTime, blockChangeTime);
             if (lastlyExecutedRequest != null) {
                 cylinderChangingNumberOfMoves += Math.abs(lastlyExecutedRequest.getCylinderID() - nextRequest.getCylinderID());
@@ -102,7 +105,8 @@ public class SCAN {
             }
 
             potentialRequest = disc.getRequest(potentialAddress);
-            tempTime += DistanceCalculator.getDifferenceInTimeBetweenTwoSegments(previousAddress, potentialAddress,
+
+            tempTime = time + DistanceCalculator.getDifferenceInTimeBetweenTwoSegments(disc.getAddress(lastlyExecutedRequest), potentialAddress,
                     disc, platterChangeTime,
                     cylinderChangeTime, blockChangeTime);
 //            cylinderChangingNumberOfMoves += Math.abs(disc.getCylinderID(previousAddress) - disc.getCylinderID(potentialAddress));
